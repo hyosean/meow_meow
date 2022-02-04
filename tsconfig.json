@@ -2,7 +2,7 @@
 	"compilerOptions": {
 		"target": "es5",
 		"lib": ["dom", "dom.iterable", "esnext"],
-		"strictNullChecks": false, //최초값 null인것 추적 flase
+		"strictNullChecks": true, //최초값 null인것 추적 flase
 		"allowJs": true,
 		"skipLibCheck": true,
 		"esModuleInterop": true,
