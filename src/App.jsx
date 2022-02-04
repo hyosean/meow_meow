@@ -20,15 +20,16 @@ function App() {
 	const handleEvent = () => {
 		if (targetValue === '') {
 			alert('고양이 이름을 입력해 주세요');
+		} else {
+			let nameList = catList.map((cur) => cur.name);
+			nameList = nameList.filter((cur) => cur.includes(targetValue));
+			let targetCats = [];
+			for (let i = 0; i < nameList.length; i++) {
+				let target = catList.filter((cur) => cur.name === nameList[i]);
+				targetCats.push(target[0]);
+			}
+			setTargetCatList(targetCats);
 		}
-		let nameList = catList.map((cur) => cur.name);
-		nameList = nameList.filter((cur) => cur.includes(targetValue));
-		let targetCats = [];
-		for (let i = 0; i < nameList.length; i++) {
-			let target = catList.filter((cur) => cur.name === nameList[i]);
-			targetCats.push(target[0]);
-		}
-		setTargetCatList(targetCats);
 	};
 
 	return (
@@ -46,8 +47,8 @@ function App() {
 							<dd>
 								<img src={cur.image.url} alt={cur.name} />
 							</dd>
-							<dd>{cur.country_codes}</dd>
-							<dd>{cur.life_span}</dd>
+							<dd>country_codes : {cur.country_codes}</dd>
+							<dd>life_span : {cur.life_span}</dd>
 							<dd>{cur.description}</dd>
 						</dl>
 					</li>
