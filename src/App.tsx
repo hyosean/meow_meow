@@ -15,6 +15,7 @@ function App(): JSX.Element {
 	const [catList, setCatList] = useState<ListItem[]>([]);
 	const [targetCatList, setTargetCatList] = useState<ListItem[]>([]);
 	const [targetValue, setTargetValue] = useState<string>('');
+	const [valueText, setValueText] = useState<string>('');
 
 	useEffect(() => {
 		axios
@@ -34,18 +35,13 @@ function App(): JSX.Element {
 			targetCats.push(target[0]);
 		}
 		setTargetCatList(targetCats);
+		setValueText(targetValue);
 		//초기화
 		setTargetValue('');
-		let text = document.querySelector('#search_bar') as Element;
-		let textContent = text.textContent as string;
-		textContent = '';
-		console.log(textContent);
 	}
 
 	const handleEnterEvent = (e: KeyboardEvent<HTMLInputElement>) => {
-		let innerText = e.target as HTMLInputElement;
-		console.log(innerText.value);
-		setTargetValue(innerText.value);
+		const innerText = e.target as HTMLInputElement;
 
 		if (e.code === 'Enter') {
 			if (targetValue === '') {
@@ -54,8 +50,11 @@ function App(): JSX.Element {
 			} else {
 				searching();
 				console.log(targetValue);
+				return;
 			}
 		} else {
+			console.log(innerText.value);
+			setTargetValue(innerText.value);
 			return;
 		}
 	};
@@ -71,8 +70,8 @@ function App(): JSX.Element {
 		<div className="App">
 			<div className="search_box">
 				<h1>THE CAT SEARCH</h1>
-				<input type="search" id="search_bar" placeholder="search about the cat" onKeyUp={(e) => handleEnterEvent(e)} />
-				<button onClick={(e) => handleClickEvent(e)}>search</button>
+				<input type="search" placeholder="search about the cat" value={valueText} onKeyUp={(e) => handleEnterEvent(e)} />
+				<button onClick={handleClickEvent}>search</button>
 			</div>
 			<ul className="result_box">
 				{targetCatList.map((cur, idx) => (
