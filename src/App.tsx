@@ -1,5 +1,6 @@
-import {useEffect, useState, KeyboardEvent, MouseEvent} from 'react';
+import {useEffect, useState, KeyboardEvent} from 'react';
 import './App.css';
+import catrun from './gif/loading.gif';
 import config from './config.json';
 import axios from 'axios';
 
@@ -15,7 +16,7 @@ function App(): JSX.Element {
 	const [catList, setCatList] = useState<ListItem[]>([]);
 	const [targetCatList, setTargetCatList] = useState<ListItem[]>([]);
 	const [targetValue, setTargetValue] = useState<string>('');
-	const [valueText, setValueText] = useState<string>('');
+	//const [valueText, setValueText] = useState<string>();
 
 	useEffect(() => {
 		axios
@@ -35,30 +36,24 @@ function App(): JSX.Element {
 			targetCats.push(target[0]);
 		}
 		setTargetCatList(targetCats);
-		setValueText(targetValue);
 		//초기화
-		setTargetValue('');
+		// setValueText('');
 	}
 
 	const handleEnterEvent = (e: KeyboardEvent<HTMLInputElement>) => {
 		const innerText = e.target as HTMLInputElement;
+		setTargetValue(innerText.value);
+		console.log(innerText.value);
 
 		if (e.code === 'Enter') {
 			if (targetValue === '') {
 				alert('고양이 이름을 입력해 주세요');
-				return;
-			} else {
-				searching();
-				console.log(targetValue);
-				return;
 			}
-		} else {
-			console.log(innerText.value);
-			setTargetValue(innerText.value);
+			searching();
 			return;
 		}
 	};
-	const handleClickEvent = (e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>) => {
+	const handleClickEvent = () => {
 		if (targetValue === '') {
 			alert('고양이 이름을 입력해 주세요');
 		} else {
@@ -70,23 +65,27 @@ function App(): JSX.Element {
 		<div className="App">
 			<div className="search_box">
 				<h1>THE CAT SEARCH</h1>
-				<input type="search" placeholder="search about the cat" value={valueText} onKeyUp={(e) => handleEnterEvent(e)} />
+				<input type="search" placeholder="search about the cat" autoFocus onKeyUp={(e) => handleEnterEvent(e)} />
 				<button onClick={handleClickEvent}>search</button>
 			</div>
 			<ul className="result_box">
-				{targetCatList.map((cur, idx) => (
-					<li key={idx}>
-						<dl>
-							<dt>{cur.name}</dt>
-							<dd>
-								<img src={cur.image?.url} alt={cur.name} />
-							</dd>
-							<dd>country_codes : {cur.country_codes}</dd>
-							<dd>life_span : {cur.life_span}</dd>
-							<dd>{cur.description}</dd>
-						</dl>
-					</li>
-				))}
+				{targetCatList.length !== 0 ? (
+					targetCatList.map((cur, idx) => (
+						<li key={idx}>
+							<dl>
+								<dt>{cur.name}</dt>
+								<dd>
+									<img src={cur.image?.url} alt={cur.name} />
+								</dd>
+								<dd>country_codes : {cur.country_codes}</dd>
+								<dd>life_span : {cur.life_span}</dd>
+								<dd>{cur.description}</dd>
+							</dl>
+						</li>
+					))
+				) : (
+					<img className="frist_img" src={catrun} alt="초기 화면" />
+				)}
 			</ul>
 		</div>
 	);
