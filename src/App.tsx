@@ -4,15 +4,15 @@ import catrun from './gif/loading.gif';
 import config from './config.json';
 import axios from 'axios';
 
-function App(): JSX.Element {
-	interface ListItem {
-		name: string;
-		image?: {url?: string};
-		country_codes: string;
-		life_span: string;
-		description: string;
-	}
+interface ListItem {
+	name: string;
+	image?: {url?: string};
+	country_codes: string;
+	life_span: string;
+	description: string;
+}
 
+function App(): JSX.Element {
 	const [catList, setCatList] = useState<ListItem[]>([]);
 	const [targetCatList, setTargetCatList] = useState<ListItem[]>([]);
 	const [targetValue, setTargetValue] = useState<string>('');
