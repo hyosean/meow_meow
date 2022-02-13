@@ -1,4 +1,4 @@
-import {useEffect, useState, KeyboardEvent} from 'react';
+import {useEffect, useState, KeyboardEvent, useCallback} from 'react';
 import './App.css';
 import catrun from './gif/loading.gif';
 import config from './config.json';
@@ -18,14 +18,25 @@ function App(): JSX.Element {
 	const [targetValue, setTargetValue] = useState<string>('');
 	//const [valueText, setValueText] = useState<string>();
 
-	useEffect(() => {
-		axios
-			.get(`${config.BASE_URL}breeds`)
-			.then((res) => {
-				setCatList(res.data);
-			})
-			.catch((e) => console.error(e));
+	const getData = useCallback(async () => {
+		try {
+			const url = `${config.BASE_URL}breeds`;
+			const res = await axios.get(url);
+			setCatList(res.data);
+		} catch (err) {
+			console.error(err);
+		}
 	}, []);
+
+	useEffect(() => {
+		// axios
+		// 	.get(`${config.BASE_URL}breeds`)
+		// 	.then((res) => {
+		// 		setCatList(res.data);
+		// 	})
+		// 	.catch((e) => console.error(e));
+		getData();
+	}, [getData]);
 
 	function searching() {
 		let nameList: string[] = catList.map((cur) => cur.name);
