@@ -1,4 +1,4 @@
-import {useEffect, useState, KeyboardEvent, useCallback} from 'react';
+import {useEffect, useState, KeyboardEvent, useCallback, useRef} from 'react';
 import './App.css';
 import catrun from './gif/loading.gif';
 import config from './config.json';
@@ -15,8 +15,7 @@ interface ListItem {
 function App(): JSX.Element {
 	const [catList, setCatList] = useState<ListItem[]>([]);
 	const [targetCatList, setTargetCatList] = useState<ListItem[]>([]);
-	const [targetValue, setTargetValue] = useState<string>('');
-	//const [valueText, setValueText] = useState<string>();
+	const searchInputRef = useRef<HTMLInputElement>(null);
 
 	const getData = useCallback(async () => {
 		try {
@@ -29,18 +28,12 @@ function App(): JSX.Element {
 	}, []);
 
 	useEffect(() => {
-		// axios
-		// 	.get(`${config.BASE_URL}breeds`)
-		// 	.then((res) => {
-		// 		setCatList(res.data);
-		// 	})
-		// 	.catch((e) => console.error(e));
 		getData();
 	}, [getData]);
 
 	function searching() {
 		let nameList: string[] = catList.map((cur) => cur.name);
-		nameList = nameList.filter((cur) => cur.includes(targetValue));
+		nameList = nameList.filter((cur) => cur.includes(searchInputRef.current!.value));
 		let targetCats: ListItem[] = [];
 		for (let i: number = 0; i < nameList.length; i++) {
 			let target: ListItem[] = catList.filter((cur) => cur.name === nameList[i]);
@@ -48,24 +41,24 @@ function App(): JSX.Element {
 		}
 		setTargetCatList(targetCats);
 		//초기화
-		// setValueText('');
+		searchInputRef.current!.value = '';
 	}
 
 	const handleEnterEvent = (e: KeyboardEvent<HTMLInputElement>) => {
 		const innerText = e.target as HTMLInputElement;
-		setTargetValue(innerText.value);
+		// setTargetValue(innerText.value);
 		console.log(innerText.value);
 
 		if (e.code === 'Enter') {
-			if (targetValue === '') {
+			if (searchInputRef.current!.value === '' || searchInputRef.current!.value === null) {
 				alert('고양이 이름을 입력해 주세요');
+			} else {
+				searching();
 			}
-			searching();
-			return;
 		}
 	};
 	const handleClickEvent = () => {
-		if (targetValue === '') {
+		if (searchInputRef.current!.value === '') {
 			alert('고양이 이름을 입력해 주세요');
 		} else {
 			searching();
@@ -76,7 +69,13 @@ function App(): JSX.Element {
 		<div className="App">
 			<div className="search_box">
 				<h1>THE CAT SEARCH</h1>
-				<input type="search" placeholder="search about the cat" autoFocus onKeyUp={(e) => handleEnterEvent(e)} />
+				<input
+					ref={searchInputRef}
+					type="search"
+					placeholder="search about the cat"
+					autoFocus
+					onKeyUp={(e) => handleEnterEvent(e)}
+				/>
 				<button onClick={handleClickEvent}>search</button>
 			</div>
 			<ul className="result_box">
