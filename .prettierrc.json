@@ -1,18 +1,18 @@
 {
-  "arrowParens": "avoid",
-  "bracketSpacing": false,
+  "tabWidth": 1,
+  "useTabs": true,
   "endOfLine": "auto",
+  "singleQuote": true,
+  "printWidth": 120,
+  "trailingComma": "all",
+  "bracketSpacing": false,
+  "arrowParens": "avoid",
   "htmlWhitespaceSensitivity": "css",
   "jsxBracketSameLine": false,
   "jsxSingleQuote": false,
-  "printWidth": 80,
   "proseWrap": "preserve",
   "quoteProps": "as-needed",
   "semi": true,
-  "singleQuote": true,
-  "tabWidth": 2,
-  "trailingComma": "all",
-  "useTabs": false,
   "vueIndentScriptAndStyle": true,
   "requirePragma": false,
   "insertPragma": false,
@@ -23,6 +23,5 @@
         "printWidth": 200
       }
     }
-  ],
-  "extends": ["plugin:react/recommended", "plugin:prettier/recommended"]
+  ]
 }
