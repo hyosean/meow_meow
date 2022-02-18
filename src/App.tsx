@@ -32,16 +32,19 @@ function App(): JSX.Element {
   }, [getData]);
 
   function searching() {
-    let nameList: string[] = catList.map(cur => cur.name);
-    nameList = nameList.filter(cur =>
-      cur.includes(searchInputRef.current!.value),
-    );
-    let targetCats: ListItem[] = [];
-    for (let i: number = 0; i < nameList.length; i++) {
-      let target: ListItem[] = catList.filter(cur => cur.name === nameList[i]);
-      targetCats.push(target[0]);
-    }
-    setTargetCatList(targetCats);
+    // let nameList: string[] = catList.map(cur => cur.name);
+    // nameList = nameList.filter(cur =>
+    //   cur.includes(searchInputRef.current!.value),
+    // );
+    // let targetCats: ListItem[] = [];
+    // for (let i: number = 0; i < nameList.length; i++) {
+    //   let target: ListItem[] = catList.filter(cur => cur.name === nameList[i]);
+    //   targetCats.push(target[0]);
+    // }
+    // setTargetCatList(targetCats);
+	const list = catList.filter(cur => cur.name.includes(searchInputRef.current!.value));
+
+	setTargetCatList(list);
     //초기화
     searchInputRef.current!.value = '';
   }
